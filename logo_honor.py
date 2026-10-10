@@ -6,10 +6,6 @@ image = cv2.imread(".\\images\\Icon-192.png")
 a = np.full((2,2), 100, dtype=np.uint8)
 b = np.full((2,2), 200, dtype=np.uint8)
 
-
-print("+ olan çıkış",a + b)
-print("Add fonksiyonu ile olan kısım",cv2.add(a,b))
-
 #### İmage procces
 # Canal split
 b, g, r = cv2.split(image)
