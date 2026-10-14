@@ -2,7 +2,7 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 
-image = cv2.imread(".\\images\\Icon-192.png")
+image = cv2.imread(".\\images\\HappyFish.jpg")
 
 #### İmage procces
 # Canal split
@@ -35,6 +35,15 @@ subtract_image = cv2.subtract(image, np.full(image.shape, 80, dtype=np.uint8))
 masked_image = cv2.inRange(grey_image,30,60)
 masked_image1 = cv2.inRange(grey_image,120,170)
 masked_image2 = cv2.inRange(grey_image,200,250)
+
+# Softing and Blurring
+blurred_image = cv2.blur(image,(5,5))
+blurred_image1 = cv2.blur(image,(10,10))
+blurred_image2 = cv2.blur(image,(20,20))
+
+grey_blurred_image = cv2.blur(image_thres,(10,10))
+blurred_grey_image = cv2.cvtColor(blurred_image1, cv2.COLOR_BGR2GRAY)
+
  
 #### Terminal outputs
 # Simple image
@@ -54,17 +63,21 @@ print("Grey Color")
 print(grey_image.shape)
 print(grey_image.dtype)
 print(grey_image[100,200], "\n")
-print(grey_image[100,200], grey_image1[100,200])
-print(cv2.absdiff(grey_image, grey_image1).max())
+print(f"Bgr To grey{grey_image[100,200]}, Manuel: {grey_image1[100,200]}")
+print(f"Fark: {cv2.absdiff(grey_image, grey_image1).max()}\n")
+
+# Threshold 
+print("Threshold Values")
+print(f"Thres1: {thres}, Thresh2: {thres1}, Thres3: {thres2}")
 
 # Total black pixel
 print(np.sum(grey_image == 0))
 
-# Image shows
+#### Image shows
 cv2.imshow("Medal of Honor", image)
 cv2.imshow("RGB Medal Of Honor", fixed_image)
-cv2.imshow("Grey Medal of Honor", grey_image)
 
+cv2.imshow("Grey Medal of Honor", grey_image)
 cv2.imshow("Grey Medal of Honor 1", grey_image1)
 
 cv2.imshow("Blue canal", b)
@@ -84,16 +97,19 @@ cv2.imshow("Mask 30- 60", masked_image)
 cv2.imshow("Mask 120- 170", masked_image1)
 cv2.imshow("Mask 200- 250", masked_image2)
 
+cv2.imshow("Blurred (5x5)", blurred_image)
+cv2.imshow("Blurred (10x10)", blurred_image1)
+cv2.imshow("Blurred (20x20)", blurred_image2)
+cv2.imshow("Grey Blurred", grey_blurred_image)
+cv2.imshow("Blurred grey", blurred_grey_image)
 
-# histogram
+### histogram 
 plt.yscale("log")
 plt.axvline(thres, color="red")
 plt.axvline(thres1, color="green")
 plt.axvline(thres2, color="yellow")
 plt.hist(grey_image.ravel(), 256, [0, 256])
 plt.show()
-
-
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
