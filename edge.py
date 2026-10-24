@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-image = cv2.imread(".\\images\\shapes.png")
+image = cv2.imread(".\\images\\HappyFish.jpg")
 grey_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 sobel_x = cv2.Sobel(image, cv2.CV_64F, 1, 0, ksize=3)
@@ -16,9 +16,23 @@ canny_image = cv2.Canny(image, 50, 150)
 canny_image1 = cv2.Canny(image, 100, 200)
 canny_image2 = cv2.Canny(image, 200, 250)
 
+grey_canny_image = cv2.Canny(grey_image, 50, 150)
+grey_canny_image1 = cv2.Canny(grey_image, 100, 200)
+grey_canny_image2 = cv2.Canny(grey_image, 200, 250)
+
 blurred_image = cv2.blur(image, (5,5))
 blurred_canny_image = cv2.Canny(blurred_image, 50, 150)
 
+for ad, k in (("renkli 50-150", canny_image),
+              ("renkli 100-200", canny_image1),
+              ("renkli 200-250", canny_image2),
+              ("gri 50-150", grey_canny_image)):
+    print(ad, np.count_nonzero(k))
+             
+for alt in (50, 125, 200):
+    print(f"Alt: {alt} numpy: {np.count_nonzero(cv2.Canny(grey_image, alt, 250))}")
+
+print("*"*20)
 sx = cv2.Sobel(grey_image, cv2.CV_64F, 1, 0, ksize=3)
 print(sx.min(), sx.max())
 
@@ -47,6 +61,10 @@ cv2.imshow("Alpha 0.25", cv2.convertScaleAbs(sx,alpha=0.25))
 cv2.imshow("Canny Image", canny_image)
 cv2.imshow("Canny Image1", canny_image1)
 cv2.imshow("Canny Image2", canny_image2)
+
+cv2.imshow("Grey Canny Image", grey_canny_image)
+cv2.imshow("Grey Canny Image1", grey_canny_image1)
+cv2.imshow("Grey Canny Image2", grey_canny_image2)
 
 cv2.imshow("Blurred Canny", blurred_canny_image)
 
